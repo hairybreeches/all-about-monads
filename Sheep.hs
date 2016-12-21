@@ -1,5 +1,6 @@
 module Sheep
 where
+import Control.Monad
 
 data Sheep = Sheep { 
                         father :: Maybe Sheep,
@@ -35,5 +36,11 @@ fathersMaternalGrandfather sheep = return sheep >>= father >>= maternalGrandfath
 
 mothersPaternalGrandfather :: Sheep -> Maybe Sheep
 mothersPaternalGrandfather sheep = return sheep >>= mother >>= father >>= father
+
+parent :: Sheep -> Maybe Sheep
+parent sheep = (mother sheep) `mplus` (father sheep)
+
+grandparent :: Sheep -> Maybe Sheep
+grandparent sheep = ((mother sheep) >>= parent) `mplus` ((father sheep) >>= parent)
 
 
