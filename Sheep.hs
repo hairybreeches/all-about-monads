@@ -27,4 +27,13 @@ sheepWithAncestry = Sheep { mother = Just sheepWithDifferentParents, father = Ju
 descendentSheep :: Sheep
 descendentSheep = Sheep { mother = Just sheepWithAncestry, father = Nothing }
 
+maternalGrandfather :: Sheep -> Maybe Sheep
+maternalGrandfather sheep = return sheep >>= mother >>= father
+
+fathersMaternalGrandfather :: Sheep -> Maybe Sheep
+fathersMaternalGrandfather sheep = return sheep >>= father >>= maternalGrandfather
+
+mothersPaternalGrandfather :: Sheep -> Maybe Sheep
+mothersPaternalGrandfather sheep = return sheep >>= mother >>= father >>= father
+
 
