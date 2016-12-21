@@ -50,4 +50,14 @@ parents sheep = (maybeToList (father sheep)) `mplus` (maybeToList (mother sheep)
 grandparents :: Sheep -> [Sheep]
 grandparents sheep = return sheep >>= parents >>= parents
 
+parent' :: (MonadPlus m) => Sheep -> m Sheep
+parent' sheep = (toMonad (father sheep)) `mplus` (toMonad (mother sheep))
+
+grandparent' :: (MonadPlus m) => Sheep -> m Sheep
+grandparent' sheep = ((toMonad mother sheep) >>= parent') `mplus` (toMonad (father sheep)) >>= parent'
+
+toMonad :: (MonadPlus m) => Maybe Sheep -> m Sheep
+toMonad (Just sheep) = return sheep
+toMonad Nothing = mzero
+
 
